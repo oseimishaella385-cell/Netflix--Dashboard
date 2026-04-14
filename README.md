@@ -5,6 +5,35 @@ An interactive Power BI dashboard designed to analyse and explore Netflix’s gl
 
 The Netflix Content Analytics Dashboard is a dynamic and visually engaging Power BI report built to analyse trends within Netflix’s film and television catalogue. It enables users to explore content distribution by genre, rating classification, release year and country availability, helping uncover insights into platform growth and global content strategy.
 
+SQL Data Transformation:
+
+Raw Excel data contained denormalised fields such as multiple cast members stored across separate columns (e.g. cast_1 to cast_50).
+
+Using SQL, these columns were unpivoted and consolidated into relational tables to improve data structure and enable scalable modelling.
+
+Example transformation:
+
+CREATE TABLE netflix_data.netflix_cast AS
+(
+    SELECT *
+    FROM (
+        SELECT show_id, cast_1 AS cast FROM netflix_data.cast
+        UNION
+        SELECT show_id, cast_2 AS cast FROM netflix_data.cast
+        UNION
+        ...
+        SELECT show_id, cast_50 AS cast FROM netflix_data.cast
+    ) a
+    WHERE cast IS NOT NULL
+);
+
+This process:
+
+Converted wide-format Excel data into a normalised relational structure
+Removed NULL values
+Enabled proper one-to-many relationships in Power BI
+Improved filtering and aggregation performance
+
 Tech Stack:
 The dashboard was built using the following tools and technologies:
 
